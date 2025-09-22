@@ -16,6 +16,7 @@
         <div class="card-body">
             <p class="card-text"><strong>ID:</strong> <span th:text="${product.id}"></span></p>
             <p class="card-text"><strong>Description:</strong> <span th:text="${product.descripcion}"></span></p>
+            <p class="card-text"><strong>Category:</strong> <span th:text="${product.categoriaNombre}"></span></p>
             <p class="card-text"><strong>Price:</strong> <span th:text="${'$' + product.precio}"></span></p>
             <p class="card-text"><strong>Stock:</strong> <span th:text="${product.stock}"></span></p>
         </div>

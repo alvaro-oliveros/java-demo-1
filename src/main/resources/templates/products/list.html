@@ -20,6 +20,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Category</th>
                 <th>Price</th>
                 <th>Stock</th>
                 <th>Actions</th>
@@ -29,6 +30,7 @@
             <tr th:each="product : ${products}">
                 <td th:text="${product.id}"></td>
                 <td th:text="${product.nombre}"></td>
+                <td th:text="${product.categoriaNombre}"></td>
                 <td th:text="${'$' + product.precio}"></td>
                 <td th:text="${product.stock}"></td>
                 <td>
@@ -39,7 +41,7 @@
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(products)}">
-                <td colspan="5" class="text-center">No products found</td>
+                <td colspan="6" class="text-center">No products found</td>
             </tr>
             </tbody>
         </table>

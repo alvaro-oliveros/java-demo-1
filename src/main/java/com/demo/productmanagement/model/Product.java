@@ -8,18 +8,21 @@ public class Product {
     private String descripcion;
     private BigDecimal precio;
     private Integer stock;
+    private Long categoriaId;
+    private String categoriaNombre; // For display purposes
 
     // Default constructor
     public Product() {
     }
 
     // Parameterized constructor
-    public Product(Long id, String nombre, String descripcion, BigDecimal precio, Integer stock) {
+    public Product(Long id, String nombre, String descripcion, BigDecimal precio, Integer stock, Long categoriaId) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.stock = stock;
+        this.categoriaId = categoriaId;
     }
 
     // Getters and Setters
@@ -63,6 +66,22 @@ public class Product {
         this.stock = stock;
     }
 
+    public Long getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(Long categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
+    public String getCategoriaNombre() {
+        return categoriaNombre;
+    }
+
+    public void setCategoriaNombre(String categoriaNombre) {
+        this.categoriaNombre = categoriaNombre;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -71,6 +90,8 @@ public class Product {
                 ", descripcion='" + descripcion + '\'' +
                 ", precio=" + precio +
                 ", stock=" + stock +
+                ", categoriaId=" + categoriaId +
+                ", categoriaNombre='" + categoriaNombre + '\'' +
                 '}';
     }
 }

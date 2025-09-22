@@ -26,6 +26,13 @@
             <label for="stock" class="form-label">Stock</label>
             <input type="number" class="form-control" id="stock" th:field="*{stock}" min="0" required>
         </div>
+        <div class="mb-3">
+            <label for="categoriaId" class="form-label">Category</label>
+            <select class="form-control" id="categoriaId" th:field="*{categoriaId}" required>
+                <option value="">Select a category</option>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.nombre}"></option>
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Save Product</button>
         <a th:href="@{/products}" class="btn btn-secondary">Cancel</a>
     </form>
@@ -47,6 +54,13 @@
         <div class="mb-3">
             <label for="stock" class="form-label">Stock</label>
             <input type="number" class="form-control" id="stock" th:field="*{stock}" min="0" required>
+        </div>
+        <div class="mb-3">
+            <label for="categoriaId" class="form-label">Category</label>
+            <select class="form-control" id="categoriaId" th:field="*{categoriaId}" required>
+                <option value="">Select a category</option>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.nombre}"></option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Update Product</button>
         <a th:href="@{/products}" class="btn btn-secondary">Cancel</a>

@@ -2,6 +2,7 @@ package com.demo.productmanagement.controller;
 
 import com.demo.productmanagement.model.Product;
 import com.demo.productmanagement.service.ProductService;
+import com.demo.productmanagement.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +16,12 @@ import java.util.Optional;
 public class ProductController {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     // List all products
@@ -32,6 +35,7 @@ public class ProductController {
     @GetMapping("/new")
     public String showNewProductForm(Model model) {
         model.addAttribute("product", new Product());
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "products/form";
     }
 
@@ -50,6 +54,7 @@ public class ProductController {
 
         if (optionalProduct.isPresent()) {
             model.addAttribute("product", optionalProduct.get());
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "products/form";
         } else {
             redirectAttributes.addFlashAttribute("error", "Producto no encontrado");

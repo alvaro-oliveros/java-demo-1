@@ -27,7 +27,7 @@ public class ProductRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Row mapper for Product
+    // Row mapper for Product with category information
     private RowMapper<Product> productRowMapper() {
         return (rs, rowNum) -> {
             Product product = new Product();
@@ -36,19 +36,33 @@ public class ProductRepository {
             product.setDescripcion(rs.getString("descripcion"));
             product.setPrecio(rs.getBigDecimal("precio"));
             product.setStock(rs.getInt("stock"));
+            product.setCategoriaId(rs.getLong("categoria_id"));
+            // Check if category name is available in the result set
+            try {
+                product.setCategoriaNombre(rs.getString("categoria_nombre"));
+            } catch (SQLException e) {
+                // Category name not available in this query
+                product.setCategoriaNombre(null);
+            }
             return product;
         };
     }
 
-    // Find all products
+    // Find all products with category names
     public List<Product> findAll() {
-        String sql = "SELECT * FROM productos ORDER BY id";
+        String sql = "SELECT p.*, c.nombre as categoria_nombre " +
+                     "FROM productos p " +
+                     "LEFT JOIN categorias c ON p.categoria_id = c.id " +
+                     "ORDER BY p.id";
         return jdbcTemplate.query(sql, productRowMapper());
     }
 
-    // Find product by ID
+    // Find product by ID with category name
     public Optional<Product> findById(Long id) {
-        String sql = "SELECT * FROM productos WHERE id = ?";
+        String sql = "SELECT p.*, c.nombre as categoria_nombre " +
+                     "FROM productos p " +
+                     "LEFT JOIN categorias c ON p.categoria_id = c.id " +
+                     "WHERE p.id = ?";
         try {
             Product product = jdbcTemplate.queryForObject(sql, new Object[]{id}, productRowMapper());
             return Optional.ofNullable(product);
@@ -59,7 +73,7 @@ public class ProductRepository {
 
     // Save new product
     public Product save(Product product) {
-        String sql = "INSERT INTO productos (nombre, descripcion, precio, stock) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO productos (nombre, descripcion, precio, stock, categoria_id) VALUES (?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -68,6 +82,7 @@ public class ProductRepository {
             ps.setString(2, product.getDescripcion());
             ps.setBigDecimal(3, product.getPrecio());
             ps.setInt(4, product.getStock());
+            ps.setLong(5, product.getCategoriaId());
             return ps;
         }, keyHolder);
 
@@ -80,12 +95,13 @@ public class ProductRepository {
 
     // Update product
     public boolean update(Product product) {
-        String sql = "UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, stock = ? WHERE id = ?";
+        String sql = "UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, stock = ?, categoria_id = ? WHERE id = ?";
         int rowsAffected = jdbcTemplate.update(sql,
                 product.getNombre(),
                 product.getDescripcion(),
                 product.getPrecio(),
                 product.getStock(),
+                product.getCategoriaId(),
                 product.getId());
         return rowsAffected > 0;
     }
