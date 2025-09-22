@@ -1,7 +1,14 @@
--- Drop table if exists
+-- Drop tables if exists
 DROP TABLE IF EXISTS productos;
+DROP TABLE IF EXISTS categorias;
 
--- Create table
+-- Create categorias table
+CREATE TABLE categorias (
+                            id SERIAL PRIMARY KEY,
+                            nombre VARCHAR(255) NOT NULL
+);
+
+-- Create productos table
 CREATE TABLE productos (
                            id SERIAL PRIMARY KEY,
                            nombre VARCHAR(255) NOT NULL,
@@ -9,6 +16,14 @@ CREATE TABLE productos (
                            precio NUMERIC(10, 2) NOT NULL,
                            stock INTEGER DEFAULT 0
 );
+
+-- Insert sample categories
+INSERT INTO categorias (nombre)
+VALUES
+    ('Laptops'),
+    ('Monitores'),
+    ('Accesorios'),
+    ('Periféricos');
 
 -- Insert some sample data
 INSERT INTO productos (nombre, descripcion, precio, stock)
